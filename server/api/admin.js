@@ -5,6 +5,7 @@ const JwtUtil = require('../utils/JwtUtil.js');
 // daos
 const AdminDAO = require('../models/AdminDAO.js');
 const CategoryDAO = require('../models/CategoryDAO');
+const ProductDAO = require('../models/ProductDAO');
 // login
 router.post('/login', async function (req, res) {
   const username = req.body.username;
@@ -30,6 +31,72 @@ router.get('/token', JwtUtil.checkToken, function (req, res) {
 router.get('/categories', JwtUtil.checkToken, async function (req, res) {
   const categories = await CategoryDAO.selectAll();
   res.json(categories);
+});
+
+// category
+router.post('/categories', JwtUtil.checkToken, async function (req, res) {
+  const name = req.body.name;
+  const category = { name: name };
+  const result = await CategoryDAO.insert(category);
+  res.json(result);
+});
+
+// category
+router.put('/categories/:id', JwtUtil.checkToken, async function (req, res) {
+  const _id = req.params.id;
+  const name = req.body.name;
+  const category = { _id: _id, name: name };
+  const result = await CategoryDAO.update(category);
+  res.json(result);
+});
+
+// category
+router.delete('/categories/:id', JwtUtil.checkToken, async function (req, res) {
+  const _id = req.params.id;
+  const result = await CategoryDAO.delete(_id);
+  res.json(result);
+});
+
+// product
+router.get('/products', JwtUtil.checkToken, async function (req, res) {
+  // pagination
+  const noProducts = await ProductDAO.selectByCount();
+  const sizePage = 4;
+  const noPages = Math.ceil(noProducts / sizePage);
+  var curPage = 1;
+  if (req.query.page) curPage = parseInt(req.query.page); // /products?page=xxx
+  const skip = (curPage - 1) * sizePage;
+  const products = await ProductDAO.selectBySkipLimit(skip, sizePage);
+  // return
+  const result = { products: products, noPages: noPages, curPage: curPage };
+  res.json(result);
+});
+
+// product
+router.post('/products', JwtUtil.checkToken, async function (req, res) {
+  const name = req.body.name;
+  const price = req.body.price;
+  const cid = req.body.category;
+  const image = req.body.image;
+  const now = new Date().getTime(); // milliseconds
+  const category = await CategoryDAO.selectByID(cid);
+  const product = { name: name, price: price, image: image, cdate: now, category: category };
+  const result = await ProductDAO.insert(product);
+  res.json(result);
+});
+
+// product
+router.put('/products/:id', JwtUtil.checkToken, async function (req, res) {
+  const _id = req.params.id;
+  const name = req.body.name;
+  const price = req.body.price;
+  const cid = req.body.category;
+  const image = req.body.image;
+  const now = new Date().getTime(); // milliseconds
+  const category = await CategoryDAO.selectByID(cid);
+  const product = { _id: _id, name: name, price: price, image: image, cdate: now, category: category };
+  const result = await ProductDAO.update(product);
+  res.json(result);
 });
 
 module.exports = router;

@@ -9,9 +9,10 @@ class App extends Component {
     return (
       <MyProvider>
         <Login />
-        <BrowserRouter>
-        <Main />
-        </BrowserRouter>
+          <BrowserRouter>
+            <Main/>
+          </BrowserRouter>
+       
       </MyProvider>
       
     );
