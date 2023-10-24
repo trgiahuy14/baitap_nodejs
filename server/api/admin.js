@@ -99,4 +99,11 @@ router.put('/products/:id', JwtUtil.checkToken, async function (req, res) {
   res.json(result);
 });
 
+// product
+router.delete('/products/:id', JwtUtil.checkToken, async function (req, res) {
+  const _id = req.params.id;
+  const result = await ProductDAO.delete(_id);
+  res.json(result);
+});
+
 module.exports = router;

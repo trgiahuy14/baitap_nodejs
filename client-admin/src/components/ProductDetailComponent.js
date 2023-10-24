@@ -156,6 +156,20 @@ class ProductDetail extends Component {
       }
     });
   }
+
+  // apis
+  apiDeleteProduct(id) {
+    const config = { headers: { 'x-access-token': this.context.token } };
+    axios.delete('/api/admin/products/' + id, config).then((res) => {
+      const result = res.data;
+      if (result) {
+        alert('OK BABY!');
+        this.apiGetProducts();
+      } else {
+        alert('SORRY BABY!');
+      }
+    });
+  }
   apiGetProducts() {
     const config = { headers: { 'x-access-token': this.context.token } };
     axios.get('/api/admin/products?page=' + this.props.curPage, config).then((res) => {
@@ -187,18 +201,6 @@ class ProductDetail extends Component {
     });
   }
 
-    // apis
-    apiDeleteProduct(id) {
-        const config = { headers: { 'x-access-token': this.context.token } };
-        axios.delete('/api/admin/products/' + id, config).then((res) => {
-          const result = res.data;
-          if (result) {
-            alert('OK BABY!');
-            this.apiGetProducts();
-          } else {
-            alert('SORRY BABY!');
-          }
-        });
-      }
+    
 }
 export default ProductDetail;

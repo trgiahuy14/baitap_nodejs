@@ -19,3 +19,6 @@ app.listen(PORT, () => {
 
 // apis
 app.use('/api/admin', require('./api/admin.js'));
+
+// apis
+app.use('/api/customer', require('./api/customer.js'));
