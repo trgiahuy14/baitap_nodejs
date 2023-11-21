@@ -12,7 +12,7 @@ import Myprofile from './MyprofileComponent';
 import Mycart from './MycartComponent';
 import Myorders from './MyordersComponent';
 import Gmap from './GmapComponent';
-
+import TawkMessenger from './TawkMessengerComponent';
 class Main extends Component {
   render() {
     return (
@@ -33,6 +33,7 @@ class Main extends Component {
           <Route path='/mycart' element={<Mycart />} />
           <Route path='/myorders' element={<Myorders />} />
           <Route path='/gmap' element={<Gmap />} />
+
         </Routes>
         <TawkMessenger />
       </div>
